@@ -1,1 +1,69 @@
-Work in progress
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> U-DREAM </title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <header>
+            <div id="title_authors" class="titlecenter"> 
+                <h1> U-DREAM: Unsupervised Dereverberation guided by a Reverberation Model </h1>
+            </div>
+            <div class="center">
+                <p style="text-align:center">
+                <b>Louis Bahrman, Mathieu Fontaine, Gaël Richard</b>
+                </p>
+                <p style="text-align:center">LTCI, Télécom Paris, IP-Paris, France</p>
+                <p style="text-align:center">Under review</p>
+                <hr>
+            </div>
+            <div class="center" style="max-width:600px">
+                <div class="container">
+                    <a href="https://doi.org/10.48550/arXiv.2507.14237">Arxiv</a> &nbsp;
+                    <a href="https://hal.science/hal-05158698">HAL</a> &nbsp;
+                    <a href="https://www.github.com/Louis-Bahrman/UDREAM">Code</a> &nbsp;
+                </div>
+            </div>
+        </header>
+        <div class="center">
+            <hr>
+            <figure>
+                <img class="figure" src="taslp_diagram.drawio.svg" alt="Block diagram">
+            </figure>
+            <section>
+                <h2>Abstract</h2>
+                <p>
+                This paper explores the outcome of training state-of-the-art dereverberation models with supervision settings ranging from weakly-supervised to fully unsupervised,
+                relying solely on reverberant signals and an acoustic model for training. 
+                Most of the existing deep learning approaches typically require paired dry and reverberant data, which are difficult to obtain in practice.
+                We develop instead a sequential learning strategy motivated by a bayesian formulation of the dereverberation problem, 
+                wherein acoustic parameters and dry signals are estimated from reverberant inputs using deep neural networks, guided by a reverberation matching loss.
+                Our most data-efficient variant requires only 100 reverberation-parameter-labelled samples to outperform an unsupervised baseline, 
+                demonstrating the effectiveness and practicality of the proposed method in low-resource scenarios. 
+                </p>    
+            </section>
+            <section>
+                <h2>Citing this work</h2>
+                <p>
+                If you use this work in your research or business, please cite it using the following BibTeX entry:
+                </p>
+                <pre>
+        <code>
+@article{bahrman2025udream,
+      title={U-DREAM: Unsupervised Dereverberation guided by a Reverberation Model}, 
+      author={Louis Bahrman and Mathieu Fontaine and Gaël Richard},
+      year={2025},
+      eprint={2507.14237},
+      archivePrefix={arXiv},
+      url={https://arxiv.org/abs/2507.14237}, 
+}
+        </code>
+                </pre>
+            </section>
+        </div>
+    </body>
+</html>
