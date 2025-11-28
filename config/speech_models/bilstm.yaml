@@ -1,0 +1,17 @@
+model:
+  speech_model:
+    class_path: model.speech_models.metricgan_generator.MetricGANGenerator
+    init_args:
+      metrics:
+        - class_path: model.utils.metrics.IgnoreLastSamplesMetricWrapper
+          init_args:
+            base_metric:
+              class_path: torchmetrics.audio.ShortTimeObjectiveIntelligibility
+              init_args:
+                fs: 16000
+                  # extended: true
+            num_ignored_last_samples: 256
+        - class_path: model.utils.metrics.IgnoreLastSamplesMetricWrapper
+          init_args:
+            base_metric: torchmetrics.audio.ScaleInvariantSignalDistortionRatio
+            num_ignored_last_samples: 256

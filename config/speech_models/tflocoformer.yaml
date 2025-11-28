@@ -1,0 +1,40 @@
+model:
+  speech_model:
+    class_path: model.speech_models.tflocoformer.TFLocoformer
+    init_args:
+      metrics:
+        - class_path: model.utils.metrics.IgnoreLastSamplesMetricWrapper
+          init_args:
+            base_metric:
+              class_path: torchmetrics.audio.ShortTimeObjectiveIntelligibility
+              init_args:
+                fs: 16000
+                  # extended: true
+            num_ignored_last_samples: 256
+        - class_path: model.utils.metrics.IgnoreLastSamplesMetricWrapper
+          init_args:
+            base_metric: torchmetrics.audio.ScaleInvariantSignalDistortionRatio
+            num_ignored_last_samples: 256
+      # we copy the config of WHAMR, for S version
+      attention_dim: 128 
+      n_layers: 4 # B
+      emb_dim: 96 # D
+      norm_type: rmsgroupnorm
+      num_groups: 4
+      tf_order: ft
+      n_heads: 4
+      flash_attention: false
+      ffn_type:
+      - swiglu_conv1d
+      - swiglu_conv1d
+      ffn_hidden_dim:
+      - 128
+      - 128
+      conv1d_kernel: 8
+      conv1d_shift: 1
+      dropout: 0.0
+      eps: 1.0e-05
+data:
+  batch_size: 4
+trainer:
+  accumulate_grad_batches: 2

@@ -1,0 +1,29 @@
+model:
+  joint_loss_module:
+    class_path: model.losses.rereverberation_loss.TimeFrequencyRereverberationLoss
+    init_args:
+      base_loss:
+        class_path: model.losses.base_losses.ScaleInvariant
+        init_args:
+          base_loss:
+            class_path: model.losses.base_losses.SumLosses
+            init_args:
+              loss_1:
+                class_path: model.losses.base_losses.ComplexToRealMSELoss
+                init_args:
+                  reduction: none
+              loss_2:
+                class_path: model.losses.base_losses.LogLoss
+                init_args:
+                  epsilon: 1.0
+                  base_loss:
+                    class_path: torch.nn.MSELoss
+                    init_args:
+                      reduction: none
+              loss_2_weight_multiplier: 1.0
+              use_gradnorm: true
+              gradnorm_rate: 0.01
+              loss_2_gradnorm_initial_weight: 10.0
+              backprop_only_best_channel: true
+              channel_dim: 1
+      num_absolute_cross_bands: 4

@@ -1,0 +1,4 @@
+model:
+  reverb_model:
+    class_path: model.utils.abs_models.OracleReverbModel
+  train_reverb_model: false

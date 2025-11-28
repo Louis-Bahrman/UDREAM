@@ -1,0 +1,22 @@
+class_path: datasets.EARSSimulatedRirsDataModule
+init_args:
+    rir_dataset:
+        class_path: datasets.SynthethicRirDataset
+        init_args:
+          rir_root: "./data/rirs_v2"
+          return_properties: null
+    batch_size: 8
+    audio_root: "./data/speech"
+    dry_signal_target_len: 64000
+    rir_target_len: 32000
+    align_and_scale_to_direct_path: True
+    dry_signal_start_index_train: null
+    dry_signal_start_index_val_test: 0
+    proportion_val_audio: null
+    proportion_val_rir: 0.01
+    num_workers: 8
+    convolve_on_gpu: True
+    normalize: True
+    ignore_silent_windows: True
+    enable_caching_train: true
+    enable_caching_val: true

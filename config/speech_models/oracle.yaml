@@ -1,0 +1,4 @@
+model:
+  speech_model:
+    class_path: model.utils.abs_models.OracleSpeechModel
+  train_speech_model: false

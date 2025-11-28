@@ -1,0 +1,27 @@
+model:
+  reverb_model:
+    class_path: model.reverb_models.polack.OraclePolackAnalysisSynthesis
+    init_args:
+      early_echoes_masking_module:
+        class_path: model.reverb_models.early_echoes.FixedTimeEarlyEnd
+        init_args:
+          end_time: 0.0025
+          fs: 16000
+          rir_length: 16000
+      regress: true
+      regression_max_energy: -5.0
+      regression_min_energy: -25.0
+      intersect_zero: False
+      rt_60_depends_from_slope_only: True
+      analysis_normalization_method: null
+      synthesis_normalization_method: null
+      analysis_rir_length: 48000
+      synthesis_rir_length: 16000
+      analysis_fs: 16000
+      synthesis_fs: 16000
+      positive_valued: false
+      num_polack_draws: 1
+      move_all_direct_energy_to_peak: true
+      direct_path_duration_ms: 2.5
+  train_speech_model: true
+  train_reverb_model: false

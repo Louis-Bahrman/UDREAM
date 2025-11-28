@@ -1,0 +1,52 @@
+model:
+  reverb_model:
+    class_path: model.reverb_models.polack.BlindPolack
+    init_args:
+      rt_60_estimator:
+        class_path: model.reverb_models.rt_60_estimators.RT60Prego
+        init_args:
+          polynomial_coeffs: null
+          polynomial_deg: 2
+          minimal_L_lim: 3
+          fs: 16000
+          default_rt_60: 0.5
+          edc_regression_intersect_zero: false
+          trainable: false
+      polack_synthesis:
+        class_path: model.reverb_models.polack.PolackSynthesis
+        init_args:
+          early_echoes_masking_module:
+            class_path: model.reverb_models.early_echoes.FixedTimeEarlyEnd
+            init_args:
+              end_time: 0.0025
+              fs: 16000
+              rir_length: 16000
+          rir_length: 16000
+          positive_valued: true
+          num_polack_draws: 1
+          fixed_sigma: null
+      blind_drr_estimator:
+        class_path: model.reverb_models.drr.MackDRREstimator
+        init_args:
+          single_mask: false # Because our target is DirectToPolackRatio, not DirectToReverberantRatio
+          fs: 16000
+          frame_length_ms: 32.0
+          hop_length_ms: 10.0
+          epsilon: 1e-8
+          hidden_size: 300
+          bandwise: false
+          oracle_drr_module: null
+      oracle_polack_analysis:
+        class_path: model.reverb_models.polack.PolackAnalysis
+        init_args:
+          regress: True
+          regression_min_energy: -25.0
+          regression_max_energy: -5.0
+          rir_length: 32000
+          fs: 16000
+          intersect_zero: false
+          rt_60_depends_from_slope_only: true
+          direct_path_duration_ms: 2.5
+      internal_loss_objective: "drr"
+      synthesis_normalization_method: "total energy"
+      metrics: []

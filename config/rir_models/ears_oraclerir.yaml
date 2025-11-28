@@ -1,0 +1,10 @@
+model:
+  reverb_model:
+    class_path: model.utils.abs_models.OracleReverbModel
+    init_args:
+      target_len: 32000
+  train_reverb_model: false
+data:
+  init_args:
+    return_rir: true
+    resample_rir: true

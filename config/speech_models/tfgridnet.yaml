@@ -1,0 +1,24 @@
+model:
+  speech_model:
+    class_path: model.speech_models.tfgridnet.TFGridNet
+    init_args:
+      metrics:
+        - class_path: model.utils.metrics.IgnoreLastSamplesMetricWrapper
+          init_args:
+            base_metric:
+              class_path: torchmetrics.audio.ShortTimeObjectiveIntelligibility
+              init_args:
+                fs: 16000
+                  # extended: true
+            num_ignored_last_samples: 256
+        - class_path: model.utils.metrics.IgnoreLastSamplesMetricWrapper
+          init_args:
+            base_metric: torchmetrics.audio.ScaleInvariantSignalDistortionRatio
+            num_ignored_last_samples: 256
+      n_layers: 4 # B for USDnet
+      lstm_hidden_units: 192 # H for USDnet
+      attn_n_head: 4 # L for USDnet
+      attn_qk_output_channel: 2 # E for USDnet
+      emb_dim: 48 # D for USDnet
+      emb_ks: 4 # I
+      emb_hs: 4 # J

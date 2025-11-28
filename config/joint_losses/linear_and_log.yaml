@@ -1,0 +1,17 @@
+model:
+  joint_loss_module:
+    class_path: model.losses.rereverberation_loss.TimeFrequencyRereverberationLoss
+    init_args:
+      base_loss:
+        class_path: model.losses.base_losses.ScaleInvariant
+        init_args:
+          base_loss:
+            class_path: model.losses.base_losses.SumLosses
+            init_args:
+              loss_1:
+                class_path: model.losses.base_losses.ComplexToRealMSELoss
+              loss_2:
+                class_path: model.losses.base_losses.LogLoss
+                init_args:
+                  epsilon: 1.0
+      num_absolute_cross_bands: 4

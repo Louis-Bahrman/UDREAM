@@ -1,0 +1,11 @@
+class_path: datasets.EARSReverbDataModule
+init_args:
+  root_path: "./data/speech/EARS-Reverb"
+  batch_size: 8
+  target_len_train_val: 4.0
+  enable_caching_train: true
+  enable_caching_val: true
+  return_rir: false
+  resample_rir: false
+  num_workers: 8
+  prefetch_factor: 2

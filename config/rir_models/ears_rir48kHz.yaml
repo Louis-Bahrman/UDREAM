@@ -1,0 +1,9 @@
+model:
+  reverb_model:
+    init_args:
+      analysis_rir_length: 192000
+      analysis_fs: 48000
+data:
+  init_args:
+    return_rir: true
+    resample_rir: false

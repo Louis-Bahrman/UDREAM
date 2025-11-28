@@ -1,0 +1,5 @@
+model:
+  reverb_model:
+    init_args:
+      analysis_rir_length: 32000
+      analysis_fs: 16000

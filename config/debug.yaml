@@ -1,0 +1,20 @@
+seed_everything: 12
+trainer:
+  limit_train_batches: 10
+  limit_val_batches: 10
+  val_check_interval: 1.0
+  max_epochs: 2
+  logger:
+    init_args:
+      name: debug
+      version: null
+      log_graph: True
+  profiler:
+    class_path: lightning.pytorch.profilers.PyTorchProfiler
+    #        class_path: lightning.pytorch.profilers.AdvancedProfiler
+    init_args:
+      filename: profile
+data:
+  batch_size: 2
+  enable_caching_train: false
+  enable_caching_val: false

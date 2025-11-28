@@ -1,0 +1,3 @@
+model:
+  speech_model: null
+  train_speech_model: false
