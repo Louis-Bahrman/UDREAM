@@ -3,6 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet"><meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ASR Test Results</title>
         <style>
 table {
@@ -23,52 +27,61 @@ table {
         </style>
     </head>
     <body>
+        <header>
+            <div id="title_authors" class="titlecenter">
+                <h1> ASR tests of U-DREAM </h1>
+            </div>
+        </header>
+        <div class="center">
+            <a href="index.html">&larr; Back to main page</a>
+            <p>
+            We have performed ASR tests on a dataset built in a similar fashion as the EARS-Reverb dataset using the annotated WSJ dataset. While our proposed method outperforms the baselines for all signal-related metrics (except SISDR), we fail to improve the WER. It seems that neural dereverberators still produce artificial sounds which are out-of-domain for ASR. 
+            Our findings are summarized in the table below:
+            </p>
 
-        <p>We have performed ASR tests on a dataset built in a similar fashion as the EARS-Reverb dataset using the annotated WSJ dataset. While our proposed method outperforms the baselines for all signal-related metrics (except SISDR), we fail to improve the WER. It seems that neural dereverberators still produce artificial sounds which are out-of-domain for ASR. Table below summarizes our findings:</p>
-
-        <table>
-            <caption>WER using 2 ASR models</caption>
-            <thead>
-                <tr>
-                    <th>Model</th>
-                    <th>WER (CRDNN trained on Librispeech)</th>
-                    <th>WER (Wav2Vec2 trained on Commonvoice)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Proposed (100 examples)</td>
-                    <td>49.9</td>
-                    <td>11.8</td>
-                </tr>
-                <tr>
-                    <td>Strong supervision (100 examples)</td>
-                    <td>49.7</td>
-                    <td>11.2</td>
-                </tr>
-                <tr>
-                    <td>WPE</td>
-                    <td>46.0</td>
-                    <td>10.8</td>
-                </tr>
-                <tr>
-                    <td>DNN-WPE (100 examples)</td>
-                    <td>54.4</td>
-                    <td>14.4</td>
-                </tr>
-                <tr>
-                    <td>Reverberant</td>
-                    <td>48.5</td>
-                    <td>11.4</td>
-                </tr>
-                <tr>
-                    <td>Dry</td>
-                    <td>13.8</td>
-                    <td>7.9</td>
-                </tr>
-            </tbody>
-        </table>
-
+            <table>
+                <caption>WER</caption>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>WER (CRDNN trained on Librispeech)</th>
+                        <th>WER (Wav2Vec2 trained on Commonvoice)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Proposed (100 examples)</td>
+                        <td>49.9</td>
+                        <td>11.8</td>
+                    </tr>
+                    <tr>
+                        <td>Strong supervision (100 examples)</td>
+                        <td>49.7</td>
+                        <td>11.2</td>
+                    </tr>
+                    <tr>
+                        <td>WPE</td>
+                        <td>46.0</td>
+                        <td>10.8</td>
+                    </tr>
+                    <tr>
+                        <td>DNN-WPE (100 examples)</td>
+                        <td>54.4</td>
+                        <td>14.4</td>
+                    </tr>
+                    <tr>
+                        <td>Reverberant</td>
+                        <td>48.5</td>
+                        <td>11.4</td>
+                    </tr>
+                    <tr>
+                        <td>Dry</td>
+                        <td>13.8</td>
+                        <td>7.9</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
 
