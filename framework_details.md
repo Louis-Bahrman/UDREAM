@@ -6,7 +6,7 @@ This document details the training framework and explains how to add your own mo
 
 This framework uses [Pytorch Lightning CLI](https://lightning.ai/docs/pytorch/stable/cli/lightning_cli_advanced.html). 
 
-Training scripts for each supervision variant are provided in COMPLETE ME.
+Training scripts for each supervision variant are provided in `train_test_scripts/`.
 
 ### Overview.
 
