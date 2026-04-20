@@ -13,7 +13,7 @@ import warnings
 with contextlib.redirect_stdout(None):
     from model.utils.run_management import instantiate_model_only
 
-LOG_ROOT = "taslp_checkpoints"
+LOG_ROOT = "UDREAM_checkpoints"
 
 # %%
 
