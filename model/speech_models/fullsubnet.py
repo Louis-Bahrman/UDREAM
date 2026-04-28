@@ -102,6 +102,28 @@ class FullSubNet(AbsSpeechModel):
         loss = self.loss_function(cRM, cIRM)
         return loss
 
+class PhaseInvariantFullSubNet(FullSubNet):
+    """
+    Phase-invariant version of FullSubNet.
+    Computes a real mask instead of a complex one and does not compute any phase correction.
+    """
+    def get_stft(self, pred, **kwargs):
+        cRM, (noisy_real, noisy_imag) = pred
+        cRM_decompressed = decompress_cIRM(cRM)
+        noisy_real = noisy_real[:, 0, ...]
+        noisy_imag = noisy_imag[:, 0, ...]
+
+        mask = torch.sigmoid(cRM_decompressed[..., 0])
+        enhanced_real = mask * noisy_real
+        enhanced_imag = mask * noisy_imag
+        enhanced_stft = torch.complex(enhanced_real, enhanced_imag)
+        return enhanced_stft.unsqueeze(-3)  # unsqueeze to match B, C, F, T shape
+    
+    def internal_loss(self, pred, target):
+        enhanced_stft = self.get_stft(pred)
+        original_stft = self.stft_module(target)
+        loss = self.loss_function(enhanced_stft.abs(), original_stft.abs())
+        return loss
 
 if __name__ == "__main__":
     model = FullSubNet(
