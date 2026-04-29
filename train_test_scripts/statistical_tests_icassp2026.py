@@ -97,16 +97,10 @@ def get_latest_versions_path_list(base_dir):
     for dir_name in list_dirs:
         if os.path.isdir(os.path.join(base_dir, dir_name)):
             dir_path = os.path.join(base_dir, dir_name)
-            dir_path = os.path.join(
-                dir_path, os.listdir(dir_path)[0]
-            )  # Assuming the first subdirectory is the one we want
-            if os.path.isdir(dir_path):
-                # Get the latest version file in the directory
-                version_dir = os.listdir(dir_path)[
-                    -1
-                ]  # Assuming the last one is the latest
-                version_path = os.path.join(dir_path, version_dir, "latest_results")
-                latest_versions.append(version_path)
+            version_dir = os.listdir(dir_path)[-1]
+            # Assuming the last one is the latest
+            version_path = os.path.join(dir_path, version_dir, "latest_results")
+            latest_versions.append(version_path)
     return latest_versions
 
 
@@ -154,7 +148,7 @@ def get_exp_name_from_path(exp_path):
     """
     parts = exp_path.split(os.sep)
     if len(parts) > 0:
-        full_name = parts[-4]  # Return the last part of the path as the experiment name
+        full_name = parts[-3]  # Return the last part of the path as the experiment name
         return full_name.removeprefix("ears16_")
     else:
         raise ValueError("Invalid experiment path provided.")

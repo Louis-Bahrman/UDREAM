@@ -24,6 +24,9 @@ conda activate hybrid_wssd
 ```
 wget 'https://zenodo.org/records/19672464/files/UDREAM_checkpoints.zip'
 unzip UDREAM_checkpoints.zip
+
+wget https://zenodo.org/records/19880589/files/PhaseInv_checkpoints.zip
+unzip PhaseInv_checkpoints.zip
 ```
 
 ## Usage
