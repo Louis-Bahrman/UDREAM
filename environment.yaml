@@ -1,4 +1,4 @@
-name: hybrid_wssd_new
+name: hybrid_wssd
 channels:
   - conda-forge
   - defaults
