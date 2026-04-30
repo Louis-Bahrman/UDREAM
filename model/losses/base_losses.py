@@ -120,6 +120,50 @@ class LogLoss(nn.Module):
         return self.base_loss((pred.abs() + self.epsilon).log(), (target.abs() + self.epsilon).log())
 
 
+class PhaseLoss(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, pred, target):
+        angle_distance = (pred.angle() - target.angle()).abs()
+        angle_distance = torch.where(angle_distance > torch.pi, 2 * torch.pi - angle_distance, angle_distance)
+        squared_distance = angle_distance**2
+        return squared_distance.mean()
+    
+class ComplexLogLoss(nn.Module):
+    def __init__(self, epsilon=1.0):
+        super().__init__()
+        self.epsilon = epsilon
+        self.magnitude_loss = LogLoss(epsilon=epsilon)
+        self.phase_loss = PhaseLoss()
+        self.base_loss = SumLosses(self.magnitude_loss, self.phase_loss, use_gradnorm=False)
+
+    def forward(self, pred, target):
+        return self.base_loss(pred, target)
+    
+class CompressedComplexLoss(nn.Module):
+    def __init__(self, base_loss: nn.Module | None = None, epsilon=1.0):
+        super().__init__()
+        if base_loss is None:
+            base_loss = ComplexToRealMSELoss(reduction="mean")
+        self.base_loss = base_loss
+        self.epsilon = epsilon
+
+    def forward(self, preds, target):
+        preds_compressed = torch.log(preds.abs() + self.epsilon) * preds.sgn()
+        target_compressed = torch.log(target.abs() + self.epsilon) * target.sgn()
+        return self.base_loss(preds_compressed, target_compressed)
+
+class PhaseInvariantMSELoss(nn.Module):
+    def __init__(self, base_loss: nn.Module | None = None):
+        super().__init__()
+        if base_loss is None:
+            base_loss = nn.MSELoss()
+        self.base_loss = base_loss
+        
+    def forward(self, preds, target):
+        return self.base_loss(preds.abs(), target.abs())
+
 class ScaleInvariant(nn.Module):
     def __init__(self, base_loss: nn.Module):
         super().__init__()
