@@ -42,7 +42,9 @@ See [framework_details.md](framework_details.md)
 
 ## Citing
 
-If you use this work in your research or business, please cite it using the following BibTeX entry:
+If you use this work in your research or business, please cite it:
+
+- For the variants with strong supervision, the reverberation model, and the unsupervised methods:
 
 ```
 @ARTICLE{11425772,
@@ -55,4 +57,19 @@ If you use this work in your research or business, please cite it using the foll
   pages={1552-1563},
   keywords={Reverberation;Acoustics;Training;Convolution;Data models;Weak supervision;Time-frequency analysis;Time-domain analysis;Europe;Predictive models;Dereverberation;hybrid deep learning;reverberation modeling;unsupervised learning},
   doi={10.1109/TASLPRO.2026.3671615}}
+```
+
+- For the best-performing weakly-supervised phase-invariant methods:
+
+```
+@INPROCEEDINGS{11462939,
+  author={Rodrigues, Marius and Bahrman, Louis and Badeau, Roland and Richard, Gaël},
+  booktitle={ICASSP 2026 - 2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  title={Is Phase Really Needed for Weakly-Supervised Dereverberation?},
+  year={2026},
+  volume={},
+  number={},
+  pages={17422-17426},
+  keywords={Filtering;System-on-chip;Filters;Band-pass filters;Feedback;Filter banks;Circuits;Application specific integrated circuits;Circuits and systems;Wireless Access in Vehicular Environments;Speech dereveberation;reverberation modeling;phase retrieval;unsupervised learning},
+  doi={10.1109/ICASSP55912.2026.11462939}}
 ```

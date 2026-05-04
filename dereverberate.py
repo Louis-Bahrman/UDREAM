@@ -13,7 +13,7 @@ import warnings
 with contextlib.redirect_stdout(None):
     from model.utils.run_management import instantiate_model_only
 
-LOG_ROOT = "UDREAM_checkpoints"
+LOG_ROOT = "UDREAM_checkpoints"  # Except for phaseInvariant models which are direclty handled
 
 # %%
 
@@ -80,11 +80,39 @@ def model_predict_wav(
     return s
 
 
-def get_log_path(model_variant, supervision_scenario, supervision_variant=None, dataset="ears"):
+def create_symlink_from_best_to_last(log_path):
+    with contextlib.redirect_stdout(None):
+        from model.utils.run_management import get_best_checkpoint, get_latest_checkpoint
+
+    # Necessary for the phaseInvariant checkpoints as only the last checkpoints and not the best are provided
+    # abs_checkpoints_paths = os.path.abspath(os.path.join(log_path, "version_0", "checkpoints"))
+    last_ckpt = get_latest_checkpoint(log_path)
+    best_checkpoint = get_best_checkpoint(log_path, monitor_mode=max)
+    if not os.path.exists(best_checkpoint):
+        os.symlink(last_ckpt, best_checkpoint)
+
+
+def get_log_path(model_variant, supervision_scenario, supervision_variant=None, phaseinvariant=True, dataset="ears"):
+    # First check the phase-invariant option
+    if (
+        phaseinvariant
+        and any(mv in model_variant.lower() for mv in ("fsn", "fullsubnet"))
+        and "weak" in supervision_scenario.lower()
+        and "ears" in dataset.lower()
+    ):
+        model_title = "FullSubNet (FSN)"
+        model_path = "FSN"
+        print("Using Phase-Invariant FullSubNet (PI-FSN) trained using a phase-invariant loss on EARS")
+        log_path = os.path.join("PhaseInv_checkpoints", "ears16_PhaseInvFSN_monoband_logloss")
+        create_symlink_from_best_to_last(log_path)
+        return log_path
+
+    # in any other case
+
     # model variant
     if any(mv in model_variant.lower() for mv in ("fsn", "fullsubnet")):
         model_title = "FullSubNet (FSN)"
-        model_path = "FSN"
+        model_path = "fsn"
     elif any(mv in model_variant.lower() for mv in ("tfl", "locoformer")):
         model_title = "TF-Locoformer (TFL)"
         model_path = "tflocoformer"
@@ -138,7 +166,7 @@ def parse_args():
         "Supervision scenario, "
         + "must be either 'strong' (Wet/Dry pairs), "
         + "'weak' (reverberation parameters)"
-        + "or 'unsupervised' (guided by a reverberation modeltrained usin 100 audio examples"
+        + "or 'unsupervised' (guided by a reverberation model trained using 100 audio examples"
     )
     parser.add_argument(
         "--supervision_scenario",
@@ -150,9 +178,22 @@ def parse_args():
     parser.add_argument(
         "--model_variant",
         "-m",
-        help="Model variant: TF-Locoformer, FullSubNet or BiLSTM. Default: BiLSTM",
+        help="Model variant: TFL (TF-Locoformer), FSN (FullSubNet) or BiLSTM."
+        + " The phase-invariant version of FSN will be used if --phaseinvariant is True and in a weak-supervsision setting."
+        + " Default: BiLSTM",
         type=str,
         default="BiLSTM",
+    )
+    parser.add_argument(
+        "--phaseinvariant",
+        "-p",
+        help="When FullSubNet trained in a weak supervision scenario on the EARS dataset is used "
+        + "(corresponding to -s weak -m FSN -d EARS),"
+        + "Use the phase-invariant model and training loss (better performance as shown in doi:10.1109/ICASSP55912.2026.11462939). "
+        + "In any other case (when either another model or another supervision scenario is used), this option is unused."
+        + "Defaults to True.",
+        default=True,
+        action=argparse.BooleanOptionalAction,
     )
     parser.add_argument(
         "--dataset",
@@ -182,13 +223,19 @@ def dereverberate_audio(
     input_audio,
     model_variant="bilstm",
     supervision_scenario="unsupervised",
+    phaseinvariant=True,
     dataset="EARS",
     output_audio=None,
     use_cuda_if_available: bool = True,
 ):
     if not os.path.exists(input_audio):
         raise ValueError(f"input audio not found {input_audio}")
-    log_path = get_log_path(model_variant=model_variant, supervision_scenario=supervision_scenario, dataset=dataset)
+    log_path = get_log_path(
+        model_variant=model_variant,
+        supervision_scenario=supervision_scenario,
+        phaseinvariant=phaseinvariant,
+        dataset=dataset,
+    )
     if not os.path.isdir(log_path):
         raise NotImplementedError(f"Checkpoint not found in {log_path}")
     config_file = get_config_file(log_path)
